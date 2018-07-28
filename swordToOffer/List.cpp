@@ -148,6 +148,98 @@ public:
         return res;
     }
 };
+/*
+@功能：二叉搜索树转换为双向排序链表
+@参数：输入为二叉树根节点，输出为链表头节点
+*/
 
-
+class Solution {
+public:
+    TreeNode* Convert(TreeNode* pRootOfTree)
+    {
+        if(pRootOfTree==nullptr)
+            return nullptr;
+        TreeNode*pLast=nullptr;
+        convert(pRootOfTree,&pLast);
+        while(pLast->left!=nullptr)
+        {
+            pLast=pLast->left;
+        }
+        return pLast;
+    }
+    void convert(TreeNode*root,TreeNode**pLast)
+    {
+        if(root==nullptr)
+            return;
+        TreeNode*cur=root;
+        //得到左子树的最后一个节点，记为pLast
+        if(cur->left)
+        {
+            convert(cur->left,pLast);
+        }
+        //将cur更新为pLast
+        cur->left=(*pLast);
+        if(*pLast)
+            (*pLast)->right=cur;
+        (*pLast)=cur;
+        //继续处理右子树
+        if(cur->right)
+        {
+            convert(cur->right,pLast);
+        }
+    }
+};
+/*
+@功能：返回两个链表的第一个公共节点
+*/
+/*
+ struct ListNode {
+ int val;
+ struct ListNode *next;
+ ListNode(int x) :
+ val(x), next(NULL) {
+ }
+ };*/
+class Solution {
+public:
+    ListNode* FindFirstCommonNode( ListNode* pHead1, ListNode* pHead2) {
+        if(pHead1==nullptr||pHead2==nullptr)
+            return nullptr;
+        int len1=0,len2=0;
+        ListNode*pNode1=pHead1,*pNode2=pHead2;
+        while(pNode1!=nullptr)
+        {
+            len1++;
+            pNode1=pNode1->next;
+        }
+        while(pNode2!=nullptr)
+        {
+            len2++;
+            pNode2=pNode2->next;
+        }
+        int diff=len1-len2;
+        ListNode*pLong=pHead1;
+        ListNode*pShort=pHead2;
+        if(len2>len1)
+        {
+            diff=len2-len1;
+            pLong=pHead2;
+            pShort=pHead1;
+        }
+        int i=0;
+        while(i<diff)
+        {
+            pLong=pLong->next;
+            i++;
+        }
+        while(pLong!=nullptr&&pShort!=nullptr)
+        {
+            if(pLong->val==pShort->val)
+            break;
+            pLong=pLong->next;
+            pShort=pShort->next;
+        }
+        return pLong;
+    }
+};
 

@@ -242,4 +242,105 @@ public:
         return pLong;
     }
 };
-
+/*
+@功能：链表的入环节点
+@参数：输入为链表头节点，如果有环，输出为入环节点，如果无环，输出为nullptr
+*/
+class Solution {
+public:
+    ListNode* EntryNodeOfLoop(ListNode* pHead)
+    {
+        if(pHead==nullptr)
+        return nullptr;
+        ListNode*fast=pHead;
+        ListNode*slow=pHead;
+        while(fast!=nullptr)
+        {
+            fast=fast->next;
+            if(fast==nullptr)
+            return nullptr;
+            fast=fast->next;
+            slow=slow->next;
+            if(slow==fast)
+            break;
+        }
+        fast=pHead;
+        while(fast!=slow)
+        {
+            fast=fast->next;
+            slow=slow->next;
+        }
+        return fast;
+    }
+};
+/*
+@功能：删除链表中重复节点；链表1->2->3->3->4->4->5 处理后为 1->2->5
+*/
+class Solution {
+public:
+    ListNode* deleteDuplication(ListNode* pHead)
+    {
+        if(pHead==nullptr)
+        return nullptr;
+        ListNode*pNode=pHead;
+        ListNode*res=new ListNode(0);
+        ListNode*temp=res;
+        while(pNode!=nullptr)
+        {
+            if(pNode->next!=nullptr)
+            {
+                bool flag=false;
+                while(pNode->next!=nullptr&&pNode->val==pNode->next->val)
+                {
+                    flag=true;
+                    pNode=pNode->next;
+                }
+                if(!flag)
+                {
+                    temp->next=new ListNode(pNode->val);
+                    temp=temp->next;
+                }
+                pNode=pNode->next;
+            }
+            else
+            {
+                temp->next=new ListNode(pNode->val);
+                pNode=pNode->next;
+            }
+        }
+        return res->next;
+    }
+};
+/*
+ @功能：删除链表中重复节点,重复节点保留一个；链表1->2->3->3->4->4->5 处理后为 1->2->3->4->5
+ */
+class Solution {
+public:
+    ListNode* deleteDuplication(ListNode* pHead)
+    {
+        if(pHead==nullptr)
+        return nullptr;
+        ListNode*pNode=pHead;
+        ListNode*res=new ListNode(0);
+        ListNode*temp=res;
+        while(pNode!=nullptr)
+        {
+            if(pNode->next!=nullptr)
+            {
+                while(pNode->next!=nullptr&&pNode->val==pNode->next->val)
+                {
+                    pNode=pNode->next;
+                }
+                temp->next=new ListNode(pNode->val);
+                temp=temp->next;
+                pNode=pNode->next;
+            }
+            else
+            {
+                temp->next=new ListNode(pNode->val);
+                pNode=pNode->next;
+            }
+        }
+        return res->next;
+    }
+};
